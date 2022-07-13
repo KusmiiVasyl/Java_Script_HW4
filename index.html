@@ -5,8 +5,18 @@
     <meta charset="utf-8" />
     <title>Java Script HW-4</title>
     <link rel="stylesheet" href="./styleLight.css">
-    <link rel="stylesheet" href="./styleDark.css">
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-direction: column;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
         li {
             margin-bottom: 15px;
             font-size: 18px;
@@ -15,22 +25,19 @@
         a {
             text-decoration: none;
             font-size: 20px;
-            color: darkblue;
-            border: 2px double black;
-            border-radius: 10px;
             padding: 0 10px 0 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
 
-<body
-    style="display:flex; justify-content: center; flex-wrap: wrap; flex-direction: column; max-width: 600px; margin: auto;margin-top: 20px;">
+<body>
     <div
         style="background-color: darkorange; color: black; font-size: 20px; font-weight: bold; border: 2px solid black; border-radius: 20px; padding: 15px; text-align: center;">
         <span>Виберіть тему:</span>
-        <input type="radio" name="topic" id="temaLight" value="light" checked>
+        <input type="radio" name="topic" id="temaLight" value="light" checked onclick="changeStyle('Light')">
         <label for="temaLight">Світла</label>
-        <input type="radio" name="topic" id="temaDark" value="dark">
+        <input type="radio" name="topic" id="temaDark" value="dark" onclick="changeStyle('Dark')">
         <label for="temaDark">Темна</label>
     </div>
     <div id="div2">
@@ -68,7 +75,13 @@
         </ol>
     </div>
     <script>
-
+        function changeStyle(msg) {
+            let lk = document.getElementsByTagName('LINK')[0];
+            document.head.removeChild(lk);
+            lk.href = "style" + msg + ".css";
+            lk.rel = "stylesheet";
+            document.head.appendChild(lk);
+        }
     </script>
 </body>
 
