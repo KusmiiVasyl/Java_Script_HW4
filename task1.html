@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Task 1</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            display: block;
+            position: relative;
+            height: 1200px;
+            width: 1200px;
+        }
+
+        #div1,
+        #div2,
+        #div3,
+        #div4 {
+            top: 10px;
+            position: absolute;
+        }
+
+        #div1 {
+            left: 10px;
+            height: 200px;
+            width: 200px;
+            background-color: blueviolet;
+        }
+
+        #div2 {
+            left: 220px;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            background-color: brown;
+        }
+
+        #div3 {
+            left: 340px;
+            height: 50px;
+            width: 150px;
+            border-radius: 20px 0 20px 0;
+            background-color: aquamarine;
+        }
+
+        #div4 {
+            left: 510px;
+            height: 150px;
+            width: 100px;
+            background-color: darkgoldenrod;
+        }
+
+        #div_a {
+            margin: 0;
+            padding: 0;
+            height: 30px;
+        }
+
+        .return {
+            text-decoration: none;
+            font-size: 22px;
+        }
+
+        .return:hover {
+            color: orange;
+            background-color: rgb(81, 79, 79);
+            transition: all .2s linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div_a">
+        <a class="return" href="./index.html">Повернутись до головного меню</a>
+    </div>
+    <div id="main">
+        <div id="div1" class="divMove"></div>
+        <div id="div2" class="divMove"></div>
+        <div id="div3" class="divMove"></div>
+        <div id="div4" class="divMove"></div>
+    </div>
+    <script>
+        let divMain = document.getElementById('main');
+        let divMove = document.getElementsByClassName('divMove');
+        let isDrag = false;
+        let divOffSetX = 0;
+        let divOffSetY = 0;
+        let el;
+        //set event mousedown for every div class-divMove
+        for (const iterator of divMove) {
+            iterator.addEventListener('mousedown', function (e) {
+                isDrag = true;
+                divOffSetX = e.offsetX;
+                divOffSetY = e.offsetY;
+                el = document.getElementById(e.srcElement.id);
+                el.style.zIndex = 10;
+            });
+        }
+        //set events for div id-main 
+        divMain.addEventListener('mouseup', function () {
+            isDrag = false;
+            el.style.zIndex = 10;
+        });
+        document.addEventListener('mousemove', function (e) {
+            if (isDrag) {
+                el.style.zIndex = 11;
+                el.style.left = ((e.pageX - divOffSetX)) + "px";
+                el.style.top = ((e.pageY - divOffSetY - 30)) + "px";
+            }
+        });
+    </script>
+</body>
+
+</html>
