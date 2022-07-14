@@ -5,6 +5,96 @@
     <meta charset="utf-8" />
     <title>Task 2</title>
     <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            display: block;
+            position: relative;
+            height: 1200px;
+            width: 1200px;
+        }
+
+        #div1,
+        #div2,
+        #div3,
+        #div4 {
+            top: 10px;
+            position: absolute;
+        }
+
+        #div1 {
+            left: 10px;
+            height: 200px;
+            width: 200px;
+            background-color: blueviolet;
+        }
+
+        #div2 {
+            left: 220px;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            background-color: brown;
+        }
+
+        #div3 {
+            left: 340px;
+            height: 50px;
+            width: 150px;
+            border-radius: 20px 0 20px 0;
+            background-color: aquamarine;
+        }
+
+        #div4 {
+            left: 510px;
+            height: 150px;
+            width: 100px;
+            background-color: darkgoldenrod;
+        }
+
+        .box {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            width: 250px;
+            height: 250px;
+            top: 500px;
+            border: 5px solid black;
+            border-top: none;
+            background-color: rgb(162, 176, 222);
+            font-size: 30px;
+            font-weight: bold;
+            color: blue;
+        }
+
+        #container1 {
+            left: 10px;
+        }
+
+        #container2 {
+            left: 280px;
+        }
+
+        #container3 {
+            left: 550px;
+        }
+
+        #container4 {
+            left: 820px;
+        }
+
+        #div_a {
+            margin: 0;
+            padding: 0;
+            height: 30px;
+        }
+
         .return {
             text-decoration: none;
             font-size: 22px;
@@ -19,12 +109,109 @@
 </head>
 
 <body>
-    <div>
+    <div id="div_a">
         <a class="return" href="./index.html">Повернутись до головного меню</a>
     </div>
-
+    <div id="main">
+        <div id="div1" class="divMove"></div>
+        <div id="div2" class="divMove"></div>
+        <div id="div3" class="divMove"></div>
+        <div id="div4" class="divMove"></div>
+        <div id="container1" class="box">Water</div>
+        <div id="container2" class="box">Water</div>
+        <div id="container3" class="box">Water</div>
+        <div id="container4" class="box">Water</div>
+    </div>
     <script>
-
+        let divMain = document.getElementById('main');
+        let divMove = document.getElementsByClassName('divMove');
+        let isDrag = false;
+        let divOffSetX = 0;
+        let divOffSetY = 0;
+        let el;
+        let elStyleLeftStart = 0;
+        let elStyleTopStart = 0;
+        // get water blocks from HTML
+        let container1 = document.getElementById('container1');
+        let container2 = document.getElementById('container2');
+        let container3 = document.getElementById('container3');
+        let container4 = document.getElementById('container4');
+        //set event mousedown for every div class-divMove
+        for (const iterator of divMove) {
+            iterator.addEventListener('mousedown', function (e) {
+                isDrag = true;
+                divOffSetX = e.offsetX;
+                divOffSetY = e.offsetY;
+                el = document.getElementById(e.srcElement.id);
+                el.style.zIndex = 10;
+                elStyleLeftStart = el.style.left;
+                elStyleTopStart = el.style.top;
+            });
+        }
+        //set events for div id-main 
+        divMain.addEventListener('mouseup', function (e) {
+            isDrag = false;
+            el.style.zIndex = 10;
+            verifyCoordinateMouse(e.pageX, e.pageY);
+        });
+        document.addEventListener('mousemove', function (e) {
+            if (isDrag) {
+                el.style.zIndex = 11;
+                el.style.left = ((e.pageX - divOffSetX)) + "px";
+                el.style.top = ((e.pageY - divOffSetY - 30)) + "px";
+            }
+        });
+        //verify coordinate of mouse if on water blocks
+        function verifyCoordinateMouse(x, y) {
+            let coordY_max = container1.offsetTop + container1.offsetHeight;
+            let coordY_min = container1.offsetTop;
+            let coordX_max = container4.offsetLeft + container4.offsetWidth;
+            if (y > coordY_min && y < coordY_max && x < coordX_max && x > container1.offsetLeft) {
+                //verify mouse on container 1
+                if (x < container1.offsetWidth) {
+                    el.style.top = (coordY_max - el.offsetHeight - 5) + "px";
+                    el.style.left = container1.offsetLeft + ((container1.offsetWidth - el.offsetWidth) / 2) + "px";
+                    el.style.opacity = 0.5;
+                    el.addEventListener('mousedown', function (e) { isDrag = false });
+                    return;
+                }
+                //verify mouse on container 2
+                if (x > container2.offsetLeft &&
+                    x < (container2.offsetLeft + container2.offsetWidth)) {
+                    el.style.top = (coordY_max - el.offsetHeight - 5) + "px";
+                    el.style.left = container2.offsetLeft + ((container2.offsetWidth - el.offsetWidth) / 2) + "px";
+                    el.style.opacity = 0.5;
+                    el.addEventListener('mousedown', function (e) { isDrag = false });
+                    return;
+                }
+                //verify mouse on container 3
+                if (x > container3.offsetLeft &&
+                    x < (container3.offsetLeft + container3.offsetWidth)) {
+                    el.style.top = (coordY_max - el.offsetHeight - 5) + "px";
+                    el.style.left = container3.offsetLeft + ((container3.offsetWidth - el.offsetWidth) / 2) + "px";
+                    el.style.opacity = 0.5;
+                    el.addEventListener('mousedown', function (e) { isDrag = false });
+                    return;
+                }
+                //verify mouse on container 4
+                if (x > container4.offsetLeft &&
+                    x < (container4.offsetLeft + container4.offsetWidth)) {
+                    el.style.top = (coordY_max - el.offsetHeight - 5) + "px";
+                    el.style.left = container4.offsetLeft + ((container4.offsetWidth - el.offsetWidth) / 2) + "px";
+                    el.style.opacity = 0.5;
+                    el.addEventListener('mousedown', function (e) { isDrag = false });
+                    return;
+                }
+                else {
+                    el.style.left = elStyleLeftStart;
+                    el.style.top = elStyleTopStart;
+                }
+            }
+            else {
+                el.style.left = elStyleLeftStart;
+                el.style.top = elStyleTopStart;
+            }
+        }
     </script>
 </body>
 
