@@ -5,6 +5,11 @@
     <meta charset="utf-8" />
     <title>Task 4</title>
     <style>
+        h1 {
+            display: flex;
+            justify-content: center;
+        }
+
         .return {
             text-decoration: none;
             font-size: 22px;
@@ -15,6 +20,34 @@
             background-color: rgb(81, 79, 79);
             transition: all .2s linear;
         }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            min-width: 700px;
+            margin: auto;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        #containerText {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        #textCopy {
+            min-width: 700px;
+        }
     </style>
 </head>
 
@@ -22,7 +55,71 @@
     <div>
         <a class="return" href="./index.html">Повернутись до головного меню</a>
     </div>
+    <h1>SELECT FROM TABLE AND SELECT COPY</h1>
+    <table>
+        <tr>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Country</th>
+        </tr>
+        <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Germany</td>
+        </tr>
+        <tr>
+            <td>Centro comercial Moctezuma</td>
+            <td>Francisco Chang</td>
+            <td>Mexico</td>
+        </tr>
+        <tr>
+            <td>Ernst Handel</td>
+            <td>Roland Mendel</td>
+            <td>Austria</td>
+        </tr>
+        <tr>
+            <td>Island Trading</td>
+            <td>Helen Bennett</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td>Laughing Bacchus Winecellars</td>
+            <td>Yoshi Tannamuri</td>
+            <td>Canada</td>
+        </tr>
+        <tr>
+            <td>Magazzini Alimentari Riuniti</td>
+            <td>Giovanni Rovelli</td>
+            <td>Italy</td>
+        </tr>
+    </table>
+    <div id="containerText">
+        <textarea name="text" id="textCopy" cols="30" rows="10" placeholder="Copy here from table"></textarea>
+    </div>
     <script>
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     alert('Таблиця на сторінці містить авторські права.');
+        // });
+        let table = document.querySelector('tbody'),
+            copyText = "",
+            textarea = document.getElementById("textCopy");
+        //add event copy
+        table.addEventListener('copy', (e) => {
+            let selText = window.getSelection().toString().replace(/[\n\r' ']+/g, ''),
+                copyrightText = " \n----------------\n«Copied from ordered table»",
+                dateCopy = new Date(),
+                day = dateCopy.getDate() < 10 ? '0' + dateCopy.getDate() : dateCopy.getDate(),
+                month = dateCopy.getMonth() < 10 ? '0' + dateCopy.getMonth() : dateCopy.getMonth(),
+                year = dateCopy.getFullYear(),
+                hour = dateCopy.getHours() < 10 ? '0' + dateCopy.getHours() : dateCopy.getHours(),
+                minutes = dateCopy.getMinutes() < 10 ? '0' + dateCopy.getMinutes() : dateCopy.getMinutes(),
+                dateInfo = '\nDate: ' + day + '.' + month + '.' + year + '\nTime: ' + hour + ':' + minutes;
+            copyText = selText + copyrightText + dateInfo;
+            textarea.textContent = copyText;
+            e.preventDefault();
+        });
+
+
 
     </script>
 </body>
