@@ -5,37 +5,111 @@
     <meta charset="utf-8" />
     <title>Task 3</title>
     <style>
-        table {
-            margin: auto;
-            font-family: arial, sans-serif;
-            min-width: 800px;
-            max-width: 1200px;
+        * {
+            font-family: 'Source Sans Pro', sans-serif;
         }
 
-        td,
-        th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            background: black;
         }
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-
-        .rowTableShadow {
-            box-shadow: 0 0 5px 2px red;
+        #div_a {
+            margin: 0;
+            padding: 0;
+            height: 30px;
         }
 
         .return {
+            color: #f1f1f1;
             text-decoration: none;
-            font-size: 22px;
         }
 
         .return:hover {
             color: orange;
             background-color: rgb(81, 79, 79);
             transition: all .2s linear;
+        }
+
+        p {
+            font-size: 0.75em;
+            font-weight: bold;
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-align: center;
+            color: white;
+            user-select: none;
+        }
+
+        .draggable-table {
+            position: absolute;
+            top: 25%;
+            left: 20%;
+            width: 60%;
+            height: 50%;
+            border-collapse: collapse;
+            background: white;
+            -webkit-box-shadow: 0px 0px 10px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .draggable-table__drag {
+            font-size: .95em;
+            font-weight: lighter;
+            text-transform: capitalize;
+            position: absolute;
+            width: 100%;
+            text-indent: 50px;
+            border: 1px solid #f1f1f1;
+            z-index: 10;
+            cursor: grabbing;
+            -webkit-box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.05);
+            box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+
+        thead th {
+            height: 25px;
+            font-weight: bold;
+            text-transform: capitalize;
+            padding: 10px;
+            user-select: none;
+            background: orange;
+        }
+
+        td {
+            font-size: .95em;
+            font-weight: lighter;
+            text-transform: capitalize;
+            text-indent: 50px;
+            padding: 10px;
+            user-select: none;
+            border-top: 1px solid whitesmoke;
+            background: lightgray;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tr.is-dragging {
+            background: darkorange;
+        }
+
+        td {
+            color: black;
         }
     </style>
 </head>
@@ -44,87 +118,156 @@
     <div id="div_a">
         <a class="return" href="./index.html">Повернутись до головного меню</a>
     </div>
-    <table id="table">
-        <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
-        </tr>
-        <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-        </tr>
-        <tr>
-            <td>Ernst Handel</td>
-            <td>Roland Mendel</td>
-            <td>Austria</td>
-        </tr>
-        <tr>
-            <td>Island Trading</td>
-            <td>Helen Bennett</td>
-            <td>UK</td>
-        </tr>
-        <tr>
-            <td>Laughing Bacchus Winecellars</td>
-            <td>Yoshi Tannamuri</td>
-            <td>Canada</td>
-        </tr>
-        <tr>
-            <td>Magazzini Alimentari Riuniti</td>
-            <td>Giovanni Rovelli</td>
-            <td>Italy</td>
-        </tr>
+    <p>Famous people</p>
+    <table id="table" class="draggable-table">
+        <thead>
+            <th>FirstName</th>
+            <th>LastName</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Marilyn</td>
+                <td>Monroe</td>
+            </tr>
+            <tr>
+                <td>Abraham</td>
+                <td>Lincoln</td>
+            </tr>
+            <tr>
+                <td>Nelson</td>
+                <td>Mandela</td>
+            </tr>
+            <tr>
+                <td>Donald</td>
+                <td>Trump</td>
+            </tr>
+            <tr>
+                <td>Mother</td>
+                <td>Teresa</td>
+            </tr>
+            <tr>
+                <td>Charles</td>
+                <td>Darwin</td>
+            </tr>
+        </tbody>
     </table>
     <script>
-        const tableCompany = document.getElementById('table');
-        const div_a = document.getElementById('div_a');
-        const heightDiv_a = div_a.offsetHeight + div_a.offsetTop;
-        let tableCompanyRow = tableCompany.childNodes[1].children;
-        let nextEl, prevEl, tmpEl;
-        let isClick = false;
-        //add events mousedown and mouseup for table row
-        for (let i = 1; i < tableCompanyRow.length; i++) {
-            tableCompanyRow[i].addEventListener('mousedown', () => {
-                isClick = true;
-                tableCompanyRow[i].className = 'rowTableShadow';
-            });
-            tableCompanyRow[i].addEventListener('mouseup', () => {
-                isClick = false;
-                tableCompanyRow[i].className = '';
-            });
-        }
-        //add event mousemove for table
-        tableCompany.addEventListener('mousemove', (e) => {
-            if (isClick) {
-                // console.log(e);
-                // console.log(e.srcElement.parentNode);
-                // console.log(e.srcElement.parentNode.nextSibling.nextSibling);
-                // console.log(e.srcElement.parentNode.previousSibling.previousSibling);
-                //swap rows
-                nextEl = e.srcElement.parentNode.nextSibling.nextSibling;
-                prevEl = e.srcElement.parentNode.previousSibling.previousSibling;
-                console.log(e.pageY - heightDiv_a);
-                console.log(e.srcElement.parentNode.offsetTop);
-                console.log(e.srcElement.parentNode);
-                console.log('----');
-                //
-                if ((e.pageY - heightDiv_a) < (e.srcElement.parentNode.offsetTop + 5)) {
-                    console.log('YES');
-                    tmpEl = e.srcElement.parentNode;
-                    tableCompany.removeChild(e.srcElement.parentNode);
-                    tableCompany.insertBefore(tmpEl, e.srcElement.parentNode);
-                    e.srcElement.removeChild(e.srcElement.parentNode);
-                    e.srcElement.parentNode = prevEl;
-                    prevEl = tmpEl;
-                }
+        const table = document.getElementById('table');
+        const tbody = table.querySelector('tbody');
+
+        var currRow = null,
+            dragElem = null,
+            mouseDownX = 0,
+            mouseDownY = 0,
+            mouseX = 0,
+            mouseY = 0,
+            mouseDrag = false;
+
+        document.addEventListener('mousedown', (event) => {
+            if (event.button != 0) return true;
+            let target = getTargetRow(event.target);
+            if (target) {
+                currRow = target;
+                addDraggableRow(target);
+                currRow.classList.add('is-dragging');
+                let coords = getMouseCoords(event);
+                mouseDownX = coords.x;
+                mouseDownY = coords.y;
+                mouseDrag = true;
             }
         });
+
+        document.addEventListener('mousemove', (event) => {
+            if (!mouseDrag) return;
+            let coords = getMouseCoords(event);
+            mouseX = coords.x - mouseDownX;
+            mouseY = coords.y - mouseDownY;
+
+            moveRow(mouseX, mouseY);
+        });
+
+        document.addEventListener('mouseup', (event) => {
+            if (!mouseDrag) return;
+            currRow.classList.remove('is-dragging');
+            table.removeChild(dragElem);
+            dragElem = null;
+            mouseDrag = false;
+        });
+
+        function swapRow(row, index) {
+            let currIndex = Array.from(tbody.children).indexOf(currRow),
+                row1 = currIndex > index ? currRow : row,
+                row2 = currIndex > index ? row : currRow;
+            tbody.insertBefore(row1, row2);
+        }
+
+        function moveRow(x, y) {
+            dragElem.style.transform = "translate3d(" + x + "px, " + y + "px, 0)";
+            let dPos = dragElem.getBoundingClientRect(),
+                currStartY = dPos.y, currEndY = currStartY + dPos.height,
+                rows = getRows();
+            for (var i = 0; i < rows.length; i++) {
+                let rowElem = rows[i],
+                    rowSize = rowElem.getBoundingClientRect(),
+                    rowStartY = rowSize.y, rowEndY = rowStartY + rowSize.height;
+                if (currRow !== rowElem && isIntersecting(currStartY, currEndY, rowStartY, rowEndY)) {
+                    if (Math.abs(currStartY - rowStartY) < rowSize.height / 2)
+                        swapRow(rowElem, i);
+                }
+            }
+        }
+
+        function addDraggableRow(target) {
+            dragElem = target.cloneNode(true);
+            dragElem.classList.add('draggable-table__drag');
+            dragElem.style.height = getStyle(target, 'height');
+            dragElem.style.background = getStyle(target, 'backgroundColor');
+            for (var i = 0; i < target.children.length; i++) {
+                let oldTD = target.children[i],
+                    newTD = dragElem.children[i];
+                newTD.style.width = getStyle(oldTD, 'width');
+                newTD.style.height = getStyle(oldTD, 'height');
+                newTD.style.padding = getStyle(oldTD, 'padding');
+                newTD.style.margin = getStyle(oldTD, 'margin');
+            }
+            table.appendChild(dragElem);
+            let tPos = target.getBoundingClientRect(),
+                dPos = dragElem.getBoundingClientRect();
+            dragElem.style.bottom = ((dPos.y - tPos.y) - tPos.height) + "px";
+            dragElem.style.left = "-1px";
+            document.dispatchEvent(new MouseEvent('mousemove',
+                { view: window, cancelable: true, bubbles: true }
+            ));
+        }
+
+        function getRows() {
+            return table.querySelectorAll('tbody tr');
+        }
+
+        function getTargetRow(target) {
+            let elemName = target.tagName.toLowerCase();
+            if (elemName == 'tr') return target;
+            if (elemName == 'td') return target.closest('tr');
+        }
+
+        function getMouseCoords(event) {
+            return {
+                x: event.clientX,
+                y: event.clientY
+            };
+        }
+
+        function getStyle(target, styleName) {
+            let compStyle = getComputedStyle(target),
+                style = compStyle[styleName];
+            return style ? style : null;
+        }
+
+        function isIntersecting(min0, max0, min1, max1) {
+            return Math.max(min0, max0) >= Math.min(min1, max1) &&
+                Math.min(min0, max0) <= Math.max(min1, max1);
+        }
+
     </script>
 </body>
 
